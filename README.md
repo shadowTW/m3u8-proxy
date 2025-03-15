@@ -12,12 +12,12 @@ This Node.js application acts as a middleman between your requests and the M3U8 
 
 Host your own instance of M3U8-Proxy on vercel
 
-[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/itzzzme/m3u8proxy)
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/PacaHat/m3u8-proxy)
 ### Render
 
 Host your own instance of M3U8-Proxy on Render.
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/itzzzme/m3u8proxy)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/PacaHat/m3u8-proxy)
 
 ### Cloudflare-worker
  - Create an example starter worker in your cloudflare account
@@ -33,7 +33,7 @@ Host your own instance of M3U8-Proxy on Render.
 
 ## <span>⚙️ Envs</span>
 
-More info can be found in [`.env.example`](https://github.com/itzzzme/m3u8proxy/blob/main/.env.example) file
+More info can be found in [`.env.example`](https://github.com/PacaHat/m3u8-proxy/blob/main/.env.example) file
 
 - `HOST`: host of your proxy server `optional`
 - `PORT`: port number (any) `optional`
