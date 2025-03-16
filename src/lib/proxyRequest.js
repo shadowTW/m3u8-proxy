@@ -86,6 +86,23 @@ function proxyRequest(req, res, proxy) {
             }
           });
         };
+        
+        proxyReq.on('error', function(err) {
+          console.error('Proxy request error:', err);
+          
+          if (!res.headersSent) {
+            res.writeHead(502, 'Bad Gateway');
+            res.end('Error connecting to target server: ' + err.message);
+          } else {
+            // Try to gracefully end the response if possible
+            try {
+              res.end();
+            } catch (e) {
+              console.error('Error ending response:', e);
+            }
+          }
+        });
+        
         return req.pipe(proxyReq);
       },
     },
@@ -99,10 +116,16 @@ function proxyRequest(req, res, proxy) {
     proxyOptions.toProxy = true;
     req.url = location.href;
   }
+  
   try {
     proxy.web(req, res, proxyOptions);
   } catch (err) {
-    console.error(err);
-    console.log(proxy);
+    console.error('Proxy initialization error:', err);
+    
+    // Send error response to client
+    if (!res.headersSent) {
+      res.writeHead(500, 'Internal Server Error');
+      res.end('Proxy initialization error: ' + err.message);
+    }
   }
 }

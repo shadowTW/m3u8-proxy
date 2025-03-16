@@ -65,7 +65,7 @@ export default function createServer(options) {
       if (!isOriginAllowed(origin, options)) {
         res.writeHead(403, "Forbidden");
         res.end(
-          `Your api is running on ${options.host}:${options.port} and you are trying to access it from ${origin}.`
+          `The origin "${origin}" was blacklisted by the operator of this proxy.`
         );
         return;
       }
@@ -78,7 +78,7 @@ export default function createServer(options) {
       if (!isOriginAllowed(origin, options)) {
         res.writeHead(403, "Forbidden");
         res.end(
-          `Your api is running on ${options.host}:${options.port} and you are trying to access it from ${origin}.`
+          `The origin "${origin}" was blacklisted by the operator of this proxy.`
         );
         return;
       }
@@ -87,14 +87,32 @@ export default function createServer(options) {
     });
   }
 
-  proxyServer.on("error", function (err, req, res) {
-    console.error("Proxy error:", err);
+proxyServer.on("error", function (err, req, res) {
+  console.error("Proxy error:", err);
+  if (!res || res.writableEnded) {
+    return;
+  }
+  
+  try {
     if (res.headersSent) {
       if (!res.writableEnded) {
         res.end();
       }
       return;
     }
+
+    const headerNames = res.getHeaderNames
+      ? res.getHeaderNames()
+      : Object.keys(res._headers || {});
+    headerNames.forEach(function (name) {
+      res.removeHeader(name);
+    });
+
+    res.writeHead(502, { "Access-Control-Allow-Origin": "*" });
+    res.end("Proxy error: " + err.message);
+  } catch (e) {
+    console.error("Error handling proxy error:", e);
+  }
 
     const headerNames = res.getHeaderNames
       ? res.getHeaderNames()

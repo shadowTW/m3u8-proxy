@@ -110,7 +110,7 @@ export default function getHandler(options, proxy) {
       if (uri.pathname === "/m3u8-proxy") {
         let headers = {};
         try {
-          headers = JSON.parse(uri.searchParams.get("headers") ?? "{}");
+          headers = JSON.parse(uri.searchParams.get("headers") ?? JSON.stringify({ "Referer": "https://megacloud.club/" }));
         } catch (e) {
           res.writeHead(500);
           res.end(e.message);
@@ -121,7 +121,7 @@ export default function getHandler(options, proxy) {
       } else if (uri.pathname === "/ts-proxy") {
         let headers = {};
         try {
-          headers = JSON.parse(uri.searchParams.get("headers") ?? "{}");
+          headers = JSON.parse(uri.searchParams.get("headers") ?? JSON.stringify({ "Referer": "https://megacloud.club/" }));
         } catch (e) {
           res.writeHead(500);
           res.end(e.message);
